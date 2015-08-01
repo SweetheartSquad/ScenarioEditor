@@ -52,17 +52,15 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
     };
 
     //SAVE JSON FILE
-		$scope.allData = [];
-
     $scope.save = function() {
-    	$scope.allData = [];
-    	$scope.allData.push($scope.characters);
-    	$scope.allData.push($scope.lines);
-    	$scope.jsonData = JSON.stringify($scope.allData);
+    	$scope.dataObj = {
+        characters : $scope.characters,
+        conversations : $scope.lines
+      };
 
-    	$http.post('cool.json', $scope.jsonData).then(function(data) {
+    	$http.post('postHandler.php', JSON.stringify($scope.dataObj)).then(function(data) {
       	$scope.msg = 'Data saved';
-      	$scope.msg2 = 'Data sent: '+ $scope.jsonData;
+      	$scope.msg2 = 'Data sent: '+ JSON.stringify($scope.dataObj);
     	});
 
     	$scope.msg2 = 'Data sent: '+ $scope.jsonData;

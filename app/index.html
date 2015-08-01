@@ -17,6 +17,7 @@
 <body ng-controller="EditorCtrl">
   <ul class="menu">
     <li><a href="#/view1">Characters</a></li>
+    <li><a href="#/view3">Rooms</a></li>
     <li><a href="#/view2">Dialogue</a></li>
   </ul>
 
@@ -26,11 +27,10 @@
 
   <div ng-view></div>
 
-  <hr/><hr/>
-
   <button ng-click="save()">Save JSON File</button>
-  {{msg}}<br/>
-  {{msg2}}<br/>
+  {{msg}}
+
+  <hr/>
 
   <div>Scenario Editor v<span app-version></span></div>
 
