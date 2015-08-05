@@ -53,7 +53,7 @@
   <div ng-view></div>
 
   <button ng-click="save()">Save JSON File</button>
-  {{msg}}
+  {{msg}} <div ng-show="dlVisible"><a target="_self" href="/savedFile.json" download="scenario.json"></div>
 
   <hr/>
 
