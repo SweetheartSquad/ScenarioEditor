@@ -51,6 +51,10 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
       );
     };
 
+    //CHECK FOR CHANGES
+    $scope.$watch('lines', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
+    $scope.$watch('characters', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
+
     //SAVE JSON FILE
     $scope.dlVisible = false;
 
@@ -62,7 +66,7 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
 
     	$http.post('postHandler.php', angular.toJson($scope.dataObj)).then(function(data) {
       	$scope.msg = 'Data saved.';
-         $scope.dlVisible = true;
+        $scope.dlVisible = true;
     	});
 
     	$scope.msg2 = 'Data sent: '+ $scope.jsonData;
