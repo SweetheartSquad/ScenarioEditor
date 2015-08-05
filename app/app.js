@@ -8,7 +8,7 @@ angular.module('scenarioEditor', [
   'scenarioEditor.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.otherwise({redirectTo: '/charView'});
 }]);
 
 var scenarioEditor = angular.module('scenarioEditor');

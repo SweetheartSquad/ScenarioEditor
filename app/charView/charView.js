@@ -3,8 +3,8 @@
 angular.module('scenarioEditor.view1', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {
-    templateUrl: 'view1/view1.html',
+  $routeProvider.when('/charView', {
+    templateUrl: 'charView/charView.html',
     controller: 'View1Ctrl'
   });
 }])

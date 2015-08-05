@@ -3,8 +3,8 @@
 angular.module('scenarioEditor.view2', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view2', {
-    templateUrl: 'view2/view2.html',
+  $routeProvider.when('/lineView', {
+    templateUrl: 'lineView/lineView.html',
     controller: 'View2Ctrl'
   });
 }])

@@ -16,9 +16,8 @@
 </head>
 <body ng-controller="EditorCtrl">
   <ul class="menu">
-    <li><a href="#/view1">Characters</a></li>
-    <li><a href="#/view3">Rooms</a></li>
-    <li><a href="#/view2">Dialogue</a></li>
+    <li><a href="#/charView">Characters</a></li>
+    <li><a href="#/lineView">Dialogue</a></li>
   </ul>
 
   <!--[if lt IE 7]>
@@ -29,7 +28,6 @@
 
   <button ng-click="save()">Save JSON File</button>
   {{msg}}
-
   <hr/>
 
   <div>Scenario Editor v<span app-version></span></div>
@@ -40,8 +38,8 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
-  <script src="view1/view1.js"></script>
-  <script src="view2/view2.js"></script>
+  <script src="charView/charView.js"></script>
+  <script src="lineView/lineView.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>
   <script src="components/version/interpolate-filter.js"></script>
