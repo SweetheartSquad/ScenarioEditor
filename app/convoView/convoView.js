@@ -24,12 +24,11 @@ angular.module('scenarioEditor.convoView', ['ngRoute'])
             currConversation++;
             convoData.push({'id':'Conversation '+currConversation});
         },
-        editConversation:function (id) {
+        editConversation:function (convo) {
             //TODO: Make this work
         },
-        deleteConversation:function (id) {
-            var index = convoData.indexOf(id);
-            convoData.splice(index, 1);  
+        deleteConversation:function (convo) {
+          convoData.splice(convoData.indexOf(convo),1);
         }
     };
 })
