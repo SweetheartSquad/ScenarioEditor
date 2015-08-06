@@ -3,8 +3,9 @@
 // Declare app level module which depends on views, and components
 angular.module('scenarioEditor', [
   'ngRoute',
-  'scenarioEditor.view1',
-  'scenarioEditor.view2',
+  'scenarioEditor.charView',
+  'scenarioEditor.lineView',
+  'scenarioEditor.convoView',
   'scenarioEditor.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
@@ -32,6 +33,22 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
          'other': ''}
       );
     };
+
+    //CONVERSATIONS
+    $scope.currConversation = 0;
+
+    $scope.conversations = [
+      {'id': 'Conversation '+$scope.currConversation}
+    ];
+
+    $scope.addConversation = function () {
+      $scope.currConversation++;
+      $scope.conversations.push(
+        {'id':'Conversation '+$scope.currConversation}
+      );
+    };
+
+    //TODO: to make all this easier, i'm going to set up some services...
 
     //LINES OF DIALOGUE
 		$scope.currLine = 0;

@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('scenarioEditor.lineView', ['ngRoute'])
+angular.module('scenarioEditor.view2', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/lineView', {
     templateUrl: 'lineView/lineView.html',
-    controller: 'LineCtrl'
+    controller: 'View2Ctrl'
   });
 }])
 
-.controller('LineCtrl', [function() {
+.controller('View2Ctrl', [function() {
 
 }]);

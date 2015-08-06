@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('scenarioEditor.view1', ['ngRoute'])
+angular.module('scenarioEditor.charView', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/charView', {
     templateUrl: 'charView/charView.html',
-    controller: 'View1Ctrl'
+    controller: 'CharCtrl'
   });
 }])
 
-.controller('View1Ctrl', [function() {
+.controller('CharCtrl', [function() {
 
 }]);
