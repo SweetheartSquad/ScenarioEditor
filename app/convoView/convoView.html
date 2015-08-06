@@ -1,10 +1,10 @@
 <h3>Conversations</h3>
 
-<form>
-	<span ng-repeat="conversation in conversations">
+<form ng-controller="ConvoCtrl">
+	<span ng-repeat="conversation in getConvos()">
 		ID: <input type="text" ng-model="conversation.id" cols="25" rows="3"></input><br/>
-		<button ng-click="#">Edit {{conversation.id}}</button>
+		<button ng-click="editConvo(conversation.id)">Edit {{conversation.id}}</button> <button ng-click="deleteConvo(conversation.id)">Delete {{conversation.id}}</button>
 		<hr/>
 	</span>
-	<button ng-click="addConversation()">Add new conversation</button>
+	<button ng-click="addConvo()">Add new conversation</button>
 </form>

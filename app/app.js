@@ -10,12 +10,57 @@ angular.module('scenarioEditor', [
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/charView'});
-}]);
+}]).
+service('convoService', function () {
+    var convoData = [
+        {'id':'Conversation 0'}
+    ];
+
+    var currConversation = 0;
+
+    return {
+        conversations:function () {
+            return convoData;
+        },
+        addConversation:function () {
+            currConversation++;
+            convoData.push({'id':'Conversation '+currConversation});
+        },
+        editConversation:function (id) {
+            //TODO: Make this work
+        },
+        deleteConversation:function (id) {
+            var index = convoData.indexOf(id);
+            convoData.splice(index, 1);  
+        }
+    };
+});
 
 var scenarioEditor = angular.module('scenarioEditor');
 
-scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
-  function ($scope,$http) {
+scenarioEditor.controller('EditorCtrl', ['$scope', '$http', 'convoService',
+  function ($scope,$http,convoService) {
+    //ABSTRACTION LAYER
+    $scope.getConvos = function () {
+      return convoService.conversations();
+    };
+
+    $scope.addConvo = function () {
+      convoService.addConversation();
+    };
+
+    $scope.editConvo = function (id) {
+      if(id in getConvos()){
+        convoService.editConversation(id);
+      }
+    };
+
+    $scope.deleteConvo = function (id) {
+      if(id in getConvos()){
+        convoService.deleteConversation(id);
+      }
+    };
+
     //CHARACTERS
 		$scope.currChar = 0;
 
@@ -33,22 +78,6 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
          'other': ''}
       );
     };
-
-    //CONVERSATIONS
-    $scope.currConversation = 0;
-
-    $scope.conversations = [
-      {'id': 'Conversation '+$scope.currConversation}
-    ];
-
-    $scope.addConversation = function () {
-      $scope.currConversation++;
-      $scope.conversations.push(
-        {'id':'Conversation '+$scope.currConversation}
-      );
-    };
-
-    //TODO: to make all this easier, i'm going to set up some services...
 
     //LINES OF DIALOGUE
 		$scope.currLine = 0;
@@ -69,6 +98,7 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
     };
 
     //CHECK FOR CHANGES
+    $scope.$watch('getConvos()', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
     $scope.$watch('lines', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
     $scope.$watch('characters', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
 
@@ -76,9 +106,11 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http',
     $scope.dlVisible = false;
 
     $scope.save = function() {
-    	$scope.dataObj = {
+    	$scope.convos = $scope.getConvos();
+
+      $scope.dataObj = {
         characters : $scope.characters,
-        conversations : $scope.lines
+        conversations : $scope.convos
       };
 
     	$http.post('postHandler.php', angular.toJson($scope.dataObj)).then(function(data) {
