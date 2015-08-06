@@ -7,11 +7,34 @@ angular.module('scenarioEditor', [
   'scenarioEditor.lineView',
   'scenarioEditor.convoView',
   'scenarioEditor.version'
-]).
-config(['$routeProvider', function($routeProvider) {
+])
+
+.config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/charView'});
-}]).
-service('convoService', function () {
+}])
+
+.service('charService', function () {
+  var charData = [
+    {'id':0,'name':'','other':''}
+  ];
+
+  var currChar = 0;
+
+  return {
+    chars:function () {
+      return charData;
+    },
+    addChar:function () {
+      currChar++;
+      charData.push({'id':currChar,'name':'',other:''});
+    },
+    deleteChar:function (character) {
+      charData.splice(charData.indexOf(character),1);
+    }
+  };
+})
+
+.service('convoService', function () {
     var convoData = [
         {'id':'Conversation 0'}
     ];
@@ -26,21 +49,35 @@ service('convoService', function () {
             currConversation++;
             convoData.push({'id':'Conversation '+currConversation});
         },
-        editConversation:function (id) {
+        editConversation:function (convo) {
             //TODO: Make this work
         },
-        deleteConversation:function (id) {
-            var index = convoData.indexOf(id);
-            convoData.splice(index, 1);  
+        deleteConversation:function (convo) {
+          convoData.splice(convoData.indexOf(convo),1);
         }
     };
 });
 
+
 var scenarioEditor = angular.module('scenarioEditor');
 
-scenarioEditor.controller('EditorCtrl', ['$scope', '$http', 'convoService',
-  function ($scope,$http,convoService) {
-    //ABSTRACTION LAYER
+scenarioEditor.controller('EditorCtrl', ['$scope', '$http', 'convoService', 'charService',
+  function ($scope,$http,convoService,charService) {
+    //CHARACTER ABSTRACTION LAYER
+    $scope.getChars = function () {
+      return charService.chars();
+    };
+
+    $scope.addChar = function () {
+      charService.addChar();
+    };
+
+    $scope.deleteChar = function (chara) {
+      charService.deleteChar(chara);
+    };
+
+
+    //CONVO ABSTRACTION LAYER
     $scope.getConvos = function () {
       return convoService.conversations();
     };
@@ -49,34 +86,14 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http', 'convoService',
       convoService.addConversation();
     };
 
-    $scope.editConvo = function (id) {
-      if(id in getConvos()){
-        convoService.editConversation(id);
-      }
+    $scope.editConvo = function (convo) {
+        convoService.editConversation(convo);
     };
 
-    $scope.deleteConvo = function (id) {
+    $scope.deleteConvo = function (convo) {
       if(id in getConvos()){
-        convoService.deleteConversation(id);
+        convoService.deleteConversation(convo);
       }
-    };
-
-    //CHARACTERS
-		$scope.currChar = 0;
-
-    $scope.characters = [
-      {'id':0,
-      	'name': '',
-      'other': ''},
-    ];
-
-    $scope.addChar = function () {
-      $scope.currChar++;
-      $scope.characters.push(
-        {'id':$scope.currChar,
-        	'name': '',
-         'other': ''}
-      );
     };
 
     //LINES OF DIALOGUE
@@ -98,19 +115,17 @@ scenarioEditor.controller('EditorCtrl', ['$scope', '$http', 'convoService',
     };
 
     //CHECK FOR CHANGES
+    $scope.$watch('getChars()', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
     $scope.$watch('getConvos()', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
     $scope.$watch('lines', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
-    $scope.$watch('characters', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
-
+   
     //SAVE JSON FILE
     $scope.dlVisible = false;
 
     $scope.save = function() {
-    	$scope.convos = $scope.getConvos();
-
       $scope.dataObj = {
-        characters : $scope.characters,
-        conversations : $scope.convos
+        characters : $scope.getChars(),
+        conversations : $scope.getConvos()
       };
 
     	$http.post('postHandler.php', angular.toJson($scope.dataObj)).then(function(data) {
