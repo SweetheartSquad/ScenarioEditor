@@ -56,6 +56,27 @@ angular.module('scenarioEditor', [
           convoData.splice(convoData.indexOf(convo),1);
         }
     };
+})
+
+.service('lineService', function () {
+  var lineData = [
+    {'id':0,'character':'','text':''}
+  ];
+
+  var currLine = 0;
+
+  return {
+    lines:function () {
+      return lineData;
+    },
+    addLine:function () {
+      currLine++;
+      lineData.push({'id':currLine,'character':'',text:''});
+    },
+    deleteLine:function (character) {
+      lineData.splice(lineData.indexOf(character),1);
+    }
+  };
 });
 
 
@@ -63,63 +84,26 @@ var scenarioEditor = angular.module('scenarioEditor');
 
 scenarioEditor.controller('EditorCtrl', ['$scope', '$http', 'convoService', 'charService',
   function ($scope,$http,convoService,charService) {
-    //CHARACTER ABSTRACTION LAYER
+    // ABSTRACTION LAYER
     $scope.getChars = function () {
       return charService.chars();
     };
 
-    $scope.addChar = function () {
-      charService.addChar();
-    };
-
-    $scope.deleteChar = function (chara) {
-      charService.deleteChar(chara);
-    };
-
-
-    //CONVO ABSTRACTION LAYER
     $scope.getConvos = function () {
       return convoService.conversations();
     };
 
-    $scope.addConvo = function () {
-      convoService.addConversation();
+    $scope.getLines = function () {
+      return lineService.lines();
     };
 
-    $scope.editConvo = function (convo) {
-        convoService.editConversation(convo);
-    };
 
-    $scope.deleteConvo = function (convo) {
-      if(id in getConvos()){
-        convoService.deleteConversation(convo);
-      }
-    };
-
-    //LINES OF DIALOGUE
-		$scope.currLine = 0;
-
-    $scope.lines = [
-      {'id': 0,
-       'character': '',
-       'text': ''},
-    ];
-
-    $scope.addLine = function () {
-      $scope.currLine++;
-      $scope.lines.push(
-        {'id':$scope.currLine,
-         'character': '',
-         'text': ''}
-      );
-    };
-
-    //CHECK FOR CHANGES
+    // CHECK FOR CHANGES
     $scope.$watch('getChars()', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
     $scope.$watch('getConvos()', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
-    $scope.$watch('lines', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
+    $scope.$watch('getLines()', function() { $scope.msg = '*'; $scope.dlVisible = false; }, true);
    
-    //SAVE JSON FILE
+    // SAVE JSON FILE
     $scope.dlVisible = false;
 
     $scope.save = function() {
