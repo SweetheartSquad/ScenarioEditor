@@ -51,14 +51,14 @@
     <li><a href="#/convoView">Conversations</a></li>
   </ul>
 
-  <div ng-view></div>
+  <div ng-view style="height:600px;"></div>
 
-  <button ng-click="save()">Save</button>
-  {{msg}} <div ng-show="dlVisible"><a target="_self" href="/savedFile.json" download="scenario.json">Download JSON file</a></div>
-
-  <hr/>
-
-  <div id="footer">Scenario Editor v<span app-version></span></div>
+  <div id="footer">
+    <button ng-click="save()">Save</button>
+    {{msg}} <div ng-show="dlVisible"><a target="_self" href="/savedFile.json" download="scenario.json">Download JSON file</a></div>
+    <hr/>
+    Scenario Editor v<span app-version></span>
+  </div>
         
 </body>
 </html>

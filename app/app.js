@@ -18,6 +18,8 @@ angular.module('scenarioEditor', [
     {'id':0,'name':'','other':''}
   ];
 
+  var charId = 0;
+
   var currChar = 0;
 
   return {
@@ -25,11 +27,17 @@ angular.module('scenarioEditor', [
       return charData;
     },
     addChar:function () {
-      currChar++;
-      charData.push({'id':currChar,'name':'',other:''});
+      charId++;
+      charData.push({'id':charId,'name':'',other:''});
     },
     deleteChar:function (character) {
       charData.splice(charData.indexOf(character),1);
+    },
+    editChar:function (character) {
+      currChar = character.id;
+    },
+    getCurrChar:function () {
+      return currChar;
     }
   };
 })
