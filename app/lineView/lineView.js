@@ -22,7 +22,7 @@ angular.module('scenarioEditor.lineView', ['ngRoute'])
 		},
 		addLine:function () {
 			currLine++;
-			lineData.push({'id':currLine,'character':'',text:''});
+			lineData.push({'id':currLine,'character':'','text':''});
 		},
 		deleteLine:function (character) {
 			lineData.splice(lineData.indexOf(character),1);
@@ -31,9 +31,9 @@ angular.module('scenarioEditor.lineView', ['ngRoute'])
 })
 
 .service('charService', function () {
-	var charData = [
-		{'id':0,'name':'','other':''}
-	];
+	var charData = [];
+
+	var charId = 0;
 
 	var currChar = 0;
 
@@ -42,11 +42,23 @@ angular.module('scenarioEditor.lineView', ['ngRoute'])
 			return charData;
 		},
 		addChar:function () {
-			currChar++;
-			charData.push({'id':currChar,'name':'',other:''});
+			charId++;
+			charData.push({'id':charId,'name':'','states':[] });
 		},
 		deleteChar:function (character) {
 			charData.splice(charData.indexOf(character),1);
+		},
+		editChar:function (character) {
+			currChar = character.id;
+		},
+		getCurrChar:function () {
+			return currChar;
+		},
+		addStateToChar:function (character,id) {
+			charData[charData.indexOf(character)].states.push({'id':id,'name':'','convoId':0});
+		},
+		getStatesLength:function (character) {
+			return charData[charData.indexOf(character)].states.length;
 		}
 	};
 })

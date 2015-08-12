@@ -1,10 +1,9 @@
 <div id="sidebar">
-<strong>Characters</strong>
+<h3>Characters</h3>
 
 <form>
 	<span ng-repeat="character in getChars()">
 		Name: <input type="text" ng-model="character.name"><br/>
-		Other: <input type="text" ng-model="character.other"><br/>
 		<button ng-click="editChar(character)">Edit</button>
 		<button ng-click="deleteChar(character)">Delete</button>
 		<hr/>
@@ -15,6 +14,19 @@
 
 <div id="main" ng-show="editVisible">
 	<span ng-repeat="character in getChars() | filter : {id: getCurrChar()}">
-		{{character.name}}
+		<h3>{{character.name}}</h3>
+		<strong>States</strong>
+		<form>
+			<span ng-repeat="state in getStates(character)">
+				Name: <input type="text" ng-model="state.name"><br/>
+				Active Conversation: <select ng-model="state.convo" ng-options="convo.id as convo.name for convo in getConvos()" >
+    	<option value="">Select Convo</option>
+		</select><br/>
+				<button ng-click="deleteState(character,state)">Delete</button>
+				<br/><br/>
+			</span>
+			<hr/>
+			<button ng-click="addState(character)">Add new state</button>
+		</form>
 	</span>
 </div>

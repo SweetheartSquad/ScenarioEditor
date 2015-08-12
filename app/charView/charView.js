@@ -9,10 +9,32 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
   });
 }])
 
+.service('convoService', function () {
+    var convoData = [
+        {'id':0,'name':'Conversation 0'}
+    ];
+
+    var currConversation = 0;
+
+    return {
+        conversations:function () {
+            return convoData;
+        },
+        addConversation:function () {
+            currConversation++;
+            convoData.push({'id':currConversation,'name':'Conversation '+currConversation});
+        },
+        editConversation:function (convo) {
+            //TODO: Make this work
+        },
+        deleteConversation:function (convo) {
+          convoData.splice(convoData.indexOf(convo),1);
+        }
+    };
+})
+
 .service('charService', function () {
-	var charData = [
-		{'id':0,'name':'','other':''}
-	];
+	var charData = [];
 
 	var charId = 0;
 
@@ -24,7 +46,7 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
 		},
 		addChar:function () {
 			charId++;
-			charData.push({'id':charId,'name':'',other:''});
+			charData.push({'id':charId,'name':'','states':[]});
 		},
 		deleteChar:function (character) {
 			charData.splice(charData.indexOf(character),1);
@@ -34,11 +56,17 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
 		},
 		getCurrChar:function () {
 			return currChar;
+		},
+		addStateToChar:function (character,id) {
+			charData[charData.indexOf(character)].states.push({'id':id,'name':'','convoId':0});
+		},
+		getStatesLength:function (character) {
+			return charData[charData.indexOf(character)].states.length;
 		}
 	};
 })
 
-.controller('CharCtrl', ['$scope', 'charService', function($scope, charService) {
+.controller('CharCtrl', ['$scope', 'charService', 'convoService', function($scope, charService, convoService) {
 	$scope.editVisible = false;
 
 	$scope.getChars = function () {
@@ -55,11 +83,32 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
 
 	$scope.editChar = function (chara) {
 		$scope.editVisible = true;
+		$scope.stateId = charService.getStatesLength(chara);
 		return charService.editChar(chara);
 	};
 
 	$scope.getCurrChar = function () {
 		return charService.getCurrChar();
-	}
+	};
+
+	$scope.getConvos = function () {
+		return convoService.conversations();
+	};
+
+	$scope.stateId = 0;
+
+	$scope.getStates = function (character) {
+		return character.states;
+	};
+
+	$scope.addState = function (character) {
+		$scope.stateId++;
+		return charService.addStateToChar(character,$scope.stateId);
+	};
+
+	$scope.deleteState = function (character,state) {
+		character.states.splice(character.states.indexOf(state),1);
+	};
+
 
 }]);
