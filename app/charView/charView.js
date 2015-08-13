@@ -69,6 +69,11 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
 .controller('CharCtrl', ['$scope', 'charService', 'convoService', function($scope, charService, convoService) {
 	$scope.editVisible = false;
 
+	$scope.stateId = 0;
+
+	$scope.currBodyPart = "";
+	$scope.editBodyPartVisible = false;
+
 	$scope.getChars = function () {
 		return charService.chars();
 	};
@@ -95,8 +100,6 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
 		return convoService.conversations();
 	};
 
-	$scope.stateId = 0;
-
 	$scope.getStates = function (character) {
 		return character.states;
 	};
@@ -109,6 +112,15 @@ angular.module('scenarioEditor.charView', ['ngRoute'])
 	$scope.deleteState = function (character,state) {
 		character.states.splice(character.states.indexOf(state),1);
 	};
+
+	$scope.editBodyPart = function (name) {
+		$scope.editBodyPartVisible = true;
+		$scope.currBodyPart = name;
+	}
+
+	$scope.closeBodyPart = function () {
+		$scope.editBodyPartVisible = false;
+	}
 
 
 }]);

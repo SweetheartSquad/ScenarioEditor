@@ -1,6 +1,7 @@
 <div id="sidebar">
 <h3>Characters</h3>
 
+<!-- SIDEBAR FOR LIST OF CHARACTERS -->
 <form>
 	<span ng-repeat="character in getChars()">
 		Name: <input type="text" ng-model="character.name"><br/>
@@ -12,9 +13,28 @@
 </form>
 </div>
 
+<!-- AREA FOR EDITING CHARACTERS -->
 <div id="main" ng-show="editVisible">
 	<span ng-repeat="character in getChars() | filter : {id: getCurrChar()}">
 		<h3>{{character.name}}</h3>
+		<table style="text-align:center;float:right;padding:10px;">
+			<tr>
+				<td></td>
+				<td colspan="2"><button ng-click="editBodyPart('Head')">HEAD</button></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><button ng-click="editBodyPart('Left Arm')">LEFT ARM</button></td>
+				<td colspan="2"><button ng-click="editBodyPart('Torso')">TORSO</button></td>
+				<td><button ng-click="editBodyPart('Right Arm')">RIGHT ARM</button></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><button ng-click="editBodyPart('Left Leg')">LEFT LEG</button></td>
+				<td><button ng-click="editBodyPart('Right Leg')">RIGHT LEG</button></td>
+				<td></td>
+			</tr>
+		</table>
 		<strong>States</strong>
 		<form>
 			<span ng-repeat="state in getStates(character)">
@@ -29,4 +49,13 @@
 			<button ng-click="addState(character)">Add new state</button>
 		</form>
 	</span>
+</div>
+
+<!-- MODAL WINDOW FOR PICKING/UPLOADING ASSETS -->
+<div class="modal" ng-show="editBodyPartVisible">
+	<span>
+		Pick asset for: {{currBodyPart}}
+	</span>
+	<hr/>
+	<button ng-click="closeBodyPart()">Close</button>
 </div>
